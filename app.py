@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import pickle
 import difflib
+import os
+st.write("Files in directory:", os.listdir())
 
 # Load data
 movies_data = pd.read_csv(r"D:\Movie recommandation system\movies.csv")
@@ -37,4 +39,5 @@ if st.button("Recommend"):
 
             if i < 30:
                 st.write(f"{i}. {title_from_index}")
+
                 i += 1

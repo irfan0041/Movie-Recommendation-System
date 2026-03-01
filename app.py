@@ -1,21 +1,27 @@
 import streamlit as st
 import pandas as pd
 import difflib
-import pickle
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 import os
 
 st.title("🎬 Movie Recommendation System")
 
 # Load dataset
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-movies_data = pd.read_csv(os.path.join(BASE_DIR, "movies.csv"))
+movies_data = pd.read_csv("movies.csv")
 
-# Load similarity file (only if exists)
-try:
-    similarity = pickle.load(open("similarity.pkl", "rb"))
-except:
-    st.error("similarity.pkl file not found!")
-    st.stop()
+# Fill missing values
+movies_data = movies_data.fillna('')
+
+# Combine important features
+combined_features = movies_data['genres'] + ' ' + movies_data['keywords'] + ' ' + movies_data['tagline'] + ' ' + movies_data['cast'] + ' ' + movies_data['director']
+
+# Convert text to vectors
+vectorizer = TfidfVectorizer()
+feature_vectors = vectorizer.fit_transform(combined_features)
+
+# Calculate similarity
+similarity = cosine_similarity(feature_vectors)
 
 movie_name = st.text_input("Enter your favourite movie name")
 
@@ -30,7 +36,7 @@ if st.button("Recommend"):
     else:
         close_match = find_close_match[0]
 
-        index_of_the_movie = movies_data[movies_data.title == close_match]['index'].values[0]
+        index_of_the_movie = movies_data[movies_data.title == close_match].index[0]
 
         similarity_score = list(enumerate(similarity[index_of_the_movie]))
 
@@ -40,5 +46,4 @@ if st.button("Recommend"):
 
         for i, movie in enumerate(sorted_similar_movies[1:21]):
             index = movie[0]
-            title_from_index = movies_data[movies_data.index == index]['title'].values[0]
-            st.write(i+1, ".", title_from_index)
+            st.write(i+1, ".", movies_data.iloc[index]['title'])

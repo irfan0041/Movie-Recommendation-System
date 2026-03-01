@@ -6,7 +6,7 @@ import os
 st.write("Files in directory:", os.listdir())
 
 # Load data
-movies_data = pd.read_csv(r"D:\Movie recommandation system\movies.csv")
+movies_data = pd.read_csv("movies.csv")
 similarity = pickle.load(open("similarity.pkl", "rb"))
 
 st.title("🎬 Movie Recommendation System")
@@ -41,3 +41,4 @@ if st.button("Recommend"):
                 st.write(f"{i}. {title_from_index}")
 
                 i += 1
+

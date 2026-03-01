@@ -44,6 +44,7 @@ if st.button("Recommend"):
 
         st.subheader("Movies Suggested For You:")
 
-        for i, movie in enumerate(sorted_similar_movies[1:21]):
+        for i, movie in enumerate(sorted_similar_movies[1:31]):
             index = movie[0]
             st.write(i+1, ".", movies_data.iloc[index]['title'])
+

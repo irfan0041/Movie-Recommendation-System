@@ -3,7 +3,7 @@ import pandas as pd
 import pickle
 import difflib
 import os
-st.write("Files in directory:", os.listdir())
+
 
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -42,6 +42,7 @@ if st.button("Recommend"):
                 st.write(f"{i}. {title_from_index}")
 
                 i += 1
+
 
 
 

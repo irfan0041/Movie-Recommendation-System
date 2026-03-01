@@ -5,8 +5,10 @@ import difflib
 import os
 st.write("Files in directory:", os.listdir())
 
-# Load data
-movies_data = pd.read_csv("movies.csv")
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+movies_data = pd.read_csv(os.path.join(BASE_DIR, "movies.csv"))
+
 similarity = pickle.load(open("similarity.pkl", "rb"))
 
 st.title("🎬 Movie Recommendation System")
@@ -41,4 +43,5 @@ if st.button("Recommend"):
                 st.write(f"{i}. {title_from_index}")
 
                 i += 1
+
 
